@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import * as tf from "@tensorflow/tfjs";
+import predict from '../utils/tfjs';
+import topSleeveClassKey from '../utils/labelKeys';
 
 class PredictImage extends Component {
   constructor() {
@@ -8,13 +9,14 @@ class PredictImage extends Component {
       imageInputBar: ``,
       imageUrl: ``,
       imageMounted: false,
+      prediction: ``,
+      isPredicting: false,
     };
   }
 
   mountImage = (event) => {
     event.preventDefault();
     const { imageInputBar } = this.state;
-    console.log(this.state.imageUrl);
     this.setState({ imageUrl: imageInputBar, imageMounted: true });
   };
 
@@ -23,10 +25,25 @@ class PredictImage extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+  getPrediction = async (event) => {
+    event.preventDefault();
+    const image = document.getElementById(`mountedImage`);
+    image.crossOrigin = `Anonymous`;
+    try {
+      this.setState({ isPredicting: true });
+      const prediction = await predict(this.props.modelName, image, topSleeveClassKey);
+      this.setState({ prediction, isPredicting: false });
+    } catch (err) {
+      console.error(`Error predicting`, err);
+    }
+  }
+
   render() {
-    const { imageUrl, imageMounted, imageInputBar } = this.state;
+    const {
+      imageUrl, imageMounted, imageInputBar, prediction, isPredicting,
+    } = this.state;
     return (
-      <div>
+      <>
         <h2>predict image component renders here</h2>
         <form onSubmit={this.mountImage}>
           <label htmlFor="imageInputBar"> Paste image url here: </label>
@@ -39,8 +56,22 @@ class PredictImage extends Component {
           />
           <button type="submit">Submit</button>
         </form>
-        {imageMounted && <img src={imageUrl} alt="predict" style={{ width: `300px`, margin: `2em` }} />}
-      </div>
+        {imageMounted && (
+          <>
+            <div>
+              <img
+                src={imageUrl}
+                id="mountedImage"
+                alt="predict"
+                style={{ width: `300px`, margin: `2em` }} /* this will set dimensions for tensor */
+                crossOrigin="Anonymous"
+              />
+            </div>
+            <button onClick={this.getPrediction}>Predict</button>
+            {prediction && <p>{isPredicting ? `Analyzing image...` : prediction}</p>}
+          </>
+        )}
+      </>
     );
   }
 }
