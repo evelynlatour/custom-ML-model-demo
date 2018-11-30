@@ -1,4 +1,6 @@
 const webpack = require(`webpack`);
+const MiniCssExtractPlugin = require(`mini-css-extract-plugin`);
+
 
 module.exports = {
   entry: [`@babel/polyfill`, `./src/index.js`],
@@ -13,6 +15,22 @@ module.exports = {
             presets: [`@babel/preset-env`],
           },
         },
+      },
+      {
+        test: /\.css/,
+        use: [
+          {
+            loader: `style-loader`,
+          },
+          {
+            loader: `css-loader`,
+            options: {
+              sourceMap: true,
+              modules: true,
+              localIdentName: `[local]___[hash:base64:5]`,
+            },
+          },
+        ],
       },
     ],
   },
