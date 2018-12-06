@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import * as tf from "@tensorflow/tfjs";
-import PredictImage from "./PredictImage";
+import PredictImage from "../PredictImage/PredictImage";
 
 class LoadModel extends Component {
   constructor() {

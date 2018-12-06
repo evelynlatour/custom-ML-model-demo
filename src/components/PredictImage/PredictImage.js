@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import predict from "../utils/tfjs";
-import topSleeveClassKey from "../utils/labelKeys";
+import predict from "../../utils/tfjs";
+import topSleeveClassKey from "../../utils/labelKeys";
 
 class PredictImage extends Component {
   constructor() {

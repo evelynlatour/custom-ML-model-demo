@@ -3,7 +3,9 @@ import styles from './Header.css';
 
 const Header = () => (
   <>
-    <h1 className={styles.element}>Header Local Model Loading</h1>
+    <div className={styles.container}>
+      <h2 className={styles.text}>Header Local Model Loading</h2>
+    </div>
   </>
 );
 

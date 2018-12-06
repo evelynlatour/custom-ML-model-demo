@@ -1,0 +1,13 @@
+.container {
+  margin: 0;
+  padding: 0;
+  background-color: lightslategray;
+  width: 100%;
+  text-align: center;
+}
+
+.text {
+  color: white;
+  padding: 2em;
+  margin: 0
+}
